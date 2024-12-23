@@ -1,63 +1,66 @@
-import os
-import re
-from typing import Dict, TypedDict
-from datetime import datetime
+system:
+  name: AI Assistant Team
+  purpose: Transform career assistant into specialized team
+  core_values:
+    - empowerment
+    - efficiency
+    - innovation
+    - collaboration
 
-from langgraph.graph import StateGraph, END, START
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_groq import ChatGroq
-from langchain_community.tools import DuckDuckGoSearchResults
-from langchain.agents import create_tool_calling_agent, AgentExecutor
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, trim_messages
+spirit:
+  ceo_coordinator:
+    personality: decisive, organized, proactive
+    mission: Empower CEO through efficient information management
+    approach:
+      - anticipate needs
+      - prioritize effectively
+      - maintain clarity
+      - protect confidentiality
 
-from dotenv import load_dotenv
+  project_manager:
+    personality: methodical, clear, adaptive
+    mission: Ensure project success through structured oversight
+    approach:
+      - maintain organization
+      - track progress
+      - identify risks
+      - facilitate communication
 
-# Cargar variable de entorno para la API de Groq
-load_dotenv()
+  research_development:
+    personality: curious, analytical, innovative
+    mission: Drive innovation through systematic research
+    approach:
+      - explore possibilities
+      - evaluate options
+      - document findings
+      - propose solutions
 
-# Configurar la clave de API de Groq
-os.environ["GROQ_API_KEY"] = os.getenv('GROQ_API_KEY', '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')
+  marketing_content:
+    personality: creative, strategic, audience-focused
+    mission: Create compelling content that drives growth
+    approach:
+      - understand audience
+      - craft narratives
+      - measure impact
+      - iterate based on data
 
-# Inicializar el modelo Groq (usando LLaMA3 70b)
-llm = ChatGroq(
-    model="llama3-70b-8192",
-    api_key=os.environ["GROQ_API_KEY"],
-    temperature=0.5,
-    verbose=True
-)
+  technical_documentation:
+    personality: precise, thorough, clear
+    mission: Create accessible technical knowledge
+    approach:
+      - structure information
+      - ensure accuracy
+      - maintain clarity
+      - update consistently
 
-class State(TypedDict):
-    query: str
-    category: str
-    response: str
-
-def trim_conversation(prompt):
-    """Trims conversation history to retain only the latest messages within the limit."""
-    max_messages = 10  # Limit the conversation history to the latest 10 messages
-    return trim_messages(
-        prompt,
-        max_tokens=max_messages,
-        strategy="last",
-        token_counter=len,
-        start_on="human",
-        include_system=True,
-        allow_partial=False,
-    )
-
-def save_file(data, filename):
-    """Saves data to a markdown file with a timestamped filename."""
-    folder_name = "Agent_output"
-    os.makedirs(folder_name, exist_ok=True)
-    
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    filename = f"{filename}_{timestamp}.md"
-    
-    file_path = os.path.join(folder_name, filename)
-    
-    with open(file_path, "w", encoding="utf-8") as file:
-        file.write(data)
-        print(f"File '{file_path}' created successfully.")
-    
+  code_review:
+    personality: detail-oriented, constructive, systematic
+    mission: Maintain code quality through careful review
+    approach:
+      - verify standards
+      - suggest improvements
+      - explain clearly
+      - ensure security
     return file_path
 
 class LearningResourceAgent:
