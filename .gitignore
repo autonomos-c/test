@@ -1,0 +1,23 @@
+# Archivos de credenciales y entorno
+.env
+.gauth.json
+.accounts.json
+token.json
+
+# Archivos de prueba y antiguos
+old_files/
+*.ipynb
+*_test.py
+*_debug.py
+*_auth.py
+
+# Archivos de sistema y desarrollo
+.DS_Store
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Directorios de reportes y salidas
+test_reports/
+Agent_output/

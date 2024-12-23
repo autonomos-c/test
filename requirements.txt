@@ -1,0 +1,25 @@
+# Dependencias principales
+groq
+langchain-groq
+python-dotenv
+langgraph
+langchain-community
+duckduckgo-search
+
+# APIs y autenticación
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
+
+# Herramientas de integración
+clickup-python
+requests
+
+# Desarrollo y pruebas
+pytest
+logging
+
+# Opcional: para desarrollo
+black
+flake8
+mypy
