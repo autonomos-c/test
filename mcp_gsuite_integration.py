@@ -12,9 +12,10 @@ class GoogleCalendarIntegration:
         'https://www.googleapis.com/auth/calendar.events'
     ]
 
-    def __init__(self, gauth_path='.gauth.json', token_path='token.json'):
+    def __init__(self, gauth_path='.gauth.json', token_path='token.json', account_email=None):
         self.gauth_path = gauth_path
         self.token_path = token_path
+        self.account_email = account_email
         self.credentials = self._get_credentials()
         self.service = build('calendar', 'v3', credentials=self.credentials)
 
@@ -44,10 +45,19 @@ class GoogleCalendarIntegration:
     def list_calendars(self):
         """Listar todos los calendarios disponibles"""
         calendars_result = self.service.calendarList().list().execute()
-        return calendars_result.get('items', [])
+        calendars = calendars_result.get('items', [])
+        
+        # Si se especifica un correo, filtrar por ese correo
+        if self.account_email:
+            calendars = [cal for cal in calendars if cal['id'] == self.account_email]
+        
+        return calendars
 
-    def get_upcoming_events(self, days=30, calendar_id='primary'):
+    def get_upcoming_events(self, days=30, calendar_id=None):
         """Obtener eventos próximos en un calendario"""
+        if not calendar_id:
+            calendar_id = self.account_email or 'primary'
+        
         now = datetime.now(timezone.utc)
         end_time = now + timedelta(days=days)
         
@@ -62,8 +72,11 @@ class GoogleCalendarIntegration:
         
         return events_result.get('items', [])
 
-    def create_event(self, summary, start_time, end_time, description=None, attendees=None, calendar_id='primary'):
+    def create_event(self, summary, start_time, end_time, description=None, attendees=None, calendar_id=None):
         """Crear un nuevo evento en el calendario"""
+        if not calendar_id:
+            calendar_id = self.account_email or 'primary'
+        
         event = {
             'summary': summary,
             'start': {
@@ -86,7 +99,7 @@ class GoogleCalendarIntegration:
         return event
 
 def main():
-    # Ejemplo de uso
+    # Ejemplo de uso sin especificar cuenta
     calendar_integration = GoogleCalendarIntegration()
     
     # Listar calendarios
