@@ -1,3 +1,5 @@
+from mcp_gsuite_integration import GoogleCalendarIntegration
+from mcp_gmail_integration import GmailIntegration
 from langchain_community.tools import MCP
 from mcp_gsuite_integration import GoogleCalendarIntegration
 #!/usr/bin/env python3
